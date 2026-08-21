@@ -1,0 +1,342 @@
+--select@zabuton_type:ざぶとんタイプ=0,行ごと=0,全体=1
+
+--group:サイズ,true
+--track@sx:Xサイズ,-1000,1000,0,1
+--track@sy:Yサイズ,-1000,1000,0,1
+--group
+
+--group:個別1~10サイズ,flase
+--track@sx1:Xサイズ1,-1000,1000,0,1
+--track@sy1:Yサイズ1,-1000,1000,0,1
+--track@sx2:Xサイズ2,-1000,1000,0,1
+--track@sy2:Yサイズ2,-1000,1000,0,1
+--track@sx3:Xサイズ3,-1000,1000,0,1
+--track@sy3:Yサイズ3,-1000,1000,0,1
+--track@sx4:Xサイズ4,-1000,1000,0,1
+--track@sy4:Yサイズ4,-1000,1000,0,1
+--track@sx5:Xサイズ5,-1000,1000,0,1
+--track@sy5:Yサイズ5,-1000,1000,0,1
+--track@sx6:Xサイズ6,-1000,1000,0,1
+--track@sy6:Yサイズ6,-1000,1000,0,1
+--track@sx7:Xサイズ7,-1000,1000,0,1
+--track@sy7:Yサイズ7,-1000,1000,0,1
+--track@sx8:Xサイズ8,-1000,1000,0,1
+--track@sy8:Yサイズ8,-1000,1000,0,1
+--track@sx9:Xサイズ9,-1000,1000,0,1
+--track@sy9:Yサイズ9,-1000,1000,0,1
+--track@sx10:Xサイズ10,-1000,1000,0,1
+--track@sy10:Yサイズ10,-1000,1000,0,1
+--group
+
+--group:位置,true
+--track@px:X位置,-1000,1000,0,1
+--track@py:Y位置,-1000,1000,0,1
+--group
+
+--group:個別1~10位置,flase
+--track@px1:X位置1,-1000,1000,0,1
+--track@py1:Y位置1,-1000,1000,0,1
+--track@px2:X位置2,-1000,1000,0,1
+--track@py2:Y位置2,-1000,1000,0,1
+--track@px3:X位置3,-1000,1000,0,1
+--track@py3:Y位置3,-1000,1000,0,1
+--track@px4:X位置4,-1000,1000,0,1
+--track@py4:Y位置4,-1000,1000,0,1
+--track@px5:X位置5,-1000,1000,0,1
+--track@py5:Y位置5,-1000,1000,0,1
+--track@px6:X位置6,-1000,1000,0,1
+--track@py6:Y位置6,-1000,1000,0,1
+--track@px7:X位置7,-1000,1000,0,1
+--track@py7:Y位置7,-1000,1000,0,1
+--track@px8:X位置8,-1000,1000,0,1
+--track@py8:Y位置8,-1000,1000,0,1
+--track@px9:X位置9,-1000,1000,0,1
+--track@py9:Y位置9,-1000,1000,0,1
+--track@px10:X位置10,-1000,1000,0,1
+--track@py10:Y位置10,-1000,1000,0,1
+--group
+
+--group:その他,true
+--track@alpha:透明度,0,100,100,1
+--group
+
+--group:図形,true
+--select@shapes:図形=1,背景=0,四角形=1,円=2,三角形=3
+--color@shape_col:図形色,0x960a0a
+--group
+
+--group:装飾,true
+--select@acce:装飾=0,水玉=0,ストライプ=1,星=3
+--track@frame_size:縁取り,0,100,0,1
+--color@frame_col:縁色,0xffffff
+--group
+
+local Akira = require("AKIRA_aviutl2_helper")
+
+obj.copybuffer("cache:org","object")
+
+-- 文字ごとに個別オブジェクトがONだったとき用に、座標を復元するように作成した変数
+local ox,oy,oz,cx,cy,cz = obj.ox,obj.oy,obj.oz,obj.cx,obj.cy,obj.cz
+local w,h = obj.w,obj.h
+
+-- 文字ごとに個別オブジェクトか否かを判定する用の変数
+local is_multi = obj.getoption("multi_object")
+
+-- 仮想画面の作成
+Akira.create_screen_tempbuffer()
+
+-- トラックバーおよび選択肢の値の取得
+local shape_names = {[1] = "四角形", [2] = "円", [3] = "三角形"}
+local shape_name = shape_names[shapes] or "四角形"
+
+-- 行数の確認（ヘッダーヘルパー利用）
+local lb = Akira.line_break_confirmation()
+if lb < 1 then lb = 1 end
+
+local size = obj.getvalue("テキスト","サイズ")
+
+local t_cs = obj.getvalue("テキスト","字間")
+local t_ls = obj.getvalue("テキスト","行間")
+
+-- 各行のサイズ一覧を配列テーブルとして取得する関数
+-- sizes[1][1],seizes[1][2]のようになっている。
+-- 配列名:sizes, 配列要素[1][1] = w,配列要素[1][2] = h
+local sizes = Akira.get_line_sizes()
+
+-- 最後の行のwのサイズ
+local last_line_w = sizes[#sizes][1]
+
+-- 各行の内容を配列テーブルとして返す関数
+-- lines[1]のようになっている。
+-- 配列名:lines, 配列要素[1] = 1行目の内容 となっている。
+local lines = Akira.get_lines_from_text()
+
+local align = obj.getvalue("テキスト","文字揃え")
+
+-- 数値に変換
+local align_type_number = {
+    ["左寄せ[上]"] = 0,
+    ["中央揃え[上]"] = 1,
+    ["右寄せ[上]"] = 2,
+    ["左寄せ[中]"] = 3,
+    ["中央揃え[中]"] = 4,
+    ["右寄せ[中]"] = 5,
+    ["左寄せ[下]"] = 6,
+    ["中央揃え[下]"] = 7,
+    ["右寄せ[下]"] = 8,
+    ["縦書 上寄[右]"] = 9,
+    ["縦書 中央[右]"] = 10,
+    ["縦書 下寄[右]"] = 11,
+    ["縦書 上寄[中]"] = 12,
+    ["縦書 中央[中]"] = 13,
+    ["縦書 下寄[中]"] = 14,
+    ["縦書 上寄[左]"] = 15,
+    ["縦書 中央[左]"] = 16,
+    ["縦書 下寄[左]"] = 17,
+}
+
+local align_num = align_type_number[align] or 4 -- nilまたは未定義文字列の場合は 4 (中央揃え[中]) を採用
+
+-- 最大幅の取得
+local max_width = 0
+for i = 1, #sizes do
+    max_width = math.max(max_width, sizes[i][1])
+end
+
+-- 行ごとのX座標オフセットを格納するテーブル
+local offset_x = {}
+
+for i = 1, #sizes do
+    local w_i = sizes[i][1]
+    if w_i == max_width then
+        -- 最大幅の行はオフセット0
+        offset_x[i] = 0
+    else
+        -- align_num に応じた座標ズレの補正
+        if align_num == 0 or align_num == 3 or align_num == 6 then
+            -- 左寄せ: 最大幅の左端に合わせる
+            offset_x[i] = -(max_width - w_i) * 1.5 * (size / 100)
+        elseif align_num == 2 or align_num == 5 or align_num == 8 then
+            -- 右寄せ: 最大幅の右端に合わせる
+            offset_x[i] = (max_width - w_i) * 1.5 * (size / 100)
+        else
+            -- 中央揃え (1, 4, 7) およびその他
+            offset_x[i] = 0
+        end
+    end
+end
+
+for i = 1,#sizes do    
+    obj.load("figure",shape_name,shape_col,100)
+    if zabuton_type == 0 then -- 行ごと
+        if i == 1 then
+            -- ここはxを*3したらぴったりサイズが一致したが、なぜ*3をしたらぴったりはまるかは正直わからない。
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx1 + t_cs * 4,"Y",sizes[i][2] + sy + sy1,"補間なし",0,"ピクセル数でサイズ指定",0)
+        elseif i == 2  then
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx2 + t_cs * 3,"Y",sizes[i][2] + sy + sy2,"補間なし",0,"ピクセル数でサイズ指定",0)
+        elseif i == 3  then
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx3,"Y",sizes[i][2] + sy + sy3,"補間なし",0,"ピクセル数でサイズ指定",0)
+        elseif i == 4 then
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx4,"Y",sizes[i][2] + sy + sy4,"補間なし",0,"ピクセル数でサイズ指定",0)
+        elseif i == 5 then
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx5,"Y",sizes[i][2] + sy + sy5,"補間なし",0,"ピクセル数でサイズ指定",0)
+        elseif i == 6 then
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx6,"Y",sizes[i][2] + sy + sy6,"補間なし",0,"ピクセル数でサイズ指定",0)
+        elseif i == 7 then
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx7,"Y",sizes[i][2] + sy + sy7,"補間なし",0,"ピクセル数でサイズ指定",0)
+        elseif i == 8 then
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx8,"Y",sizes[i][2] + sy + sy8,"補間なし",0,"ピクセル数でサイズ指定",0)
+        elseif i == 9 then
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx9,"Y",sizes[i][2] + sy + sy9,"補間なし",0,"ピクセル数でサイズ指定",0)
+        elseif i == 10 then
+            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx10,"Y",sizes[i][2] + sy + sy10,"補間なし",0,"ピクセル数でサイズ指定",0)
+        end
+        obj.effect("縁取り","サイズ",frame_size,"ぼかし",5,"縁色",frame_col)
+        if #sizes == 1 then
+            obj.draw(offset_x[i] + px + px1,0 + py + py)
+        elseif #sizes == 2 then
+            if i == 1 then
+                obj.draw(offset_x[i] + px + px1,-(h / 4) + py + py1 - t_ls / 2)
+            else
+                obj.draw(offset_x[i] + px + px2,h / 4 + py + py2 + t_ls / 2)
+            end
+        elseif #sizes == 3 then
+            if i == 1 then
+                obj.draw(offset_x[i] + px + px1,-(h / 3) + py + py1 - t_ls)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px2,0 + py + py2)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px3,h / 3+ py + py3 + t_ls)
+            end
+        elseif #sizes == 4 then
+            if i == 1 then
+                obj.draw(offset_x[i] + px + px1,-(h / 2.7) + py + py1 - t_ls * 1.5)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px2,-(h / 8) + py + py2 - t_ls / 2)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px3,h / 8 + py + py3 + t_ls / 2)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px4,h / 2.7 + py + py4 + t_ls * 1.5)
+            end
+        elseif #sizes == 5 then
+            if i == 1 then
+                obj.draw(offset_x[i] + px + px1,-(h / 2.5) + py + py1 - t_ls * 1.5)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px2,-(h / 5.5) + py + py2 - t_ls / 2)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px3,0 + py + py3)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px4,h / 5.5 + py + py4 + t_ls / 2)
+            elseif i == 5 then
+                obj.draw(offset_x[i] + px + px5,h / 2.5 + py + py5 + t_ls * 1.5)
+            end
+        elseif #sizes == 6 then
+            if i == 1 then
+                obj.draw(offset_x[i] + px + px1,-(h / 2.5) + py + py1 - t_ls * 2.5)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px2,-(h / 4) + py + py2 - t_ls * 1.5)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px3,-(h / 12.5) + py + py3 - t_ls / 2)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px4,h / 2.5 + py + py4 + t_ls / 2)
+            elseif i == 5 then
+                obj.draw(offset_x[i] + px + px5,h / 4 + py + py5 + t_ls * 1.5)
+            elseif i == 6 then
+                obj.draw(offset_x[i] + px + px6,h / 12.5 + py + py6 + t_ls * 2.5)
+            end
+        elseif #sizes == 7 then
+            if i == 1 then
+                obj.draw(offset_x[i] + px + px1,-(h / 2.3) + py + py1 - t_ls * 2.5)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px2,-(h / 3.5) + py + py2 - t_ls * 1.5)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px3,-(h / 6.5) + py + py3 - t_ls / 2)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px4,0 + py + py4)
+            elseif i == 5 then
+                obj.draw(offset_x[i] + px + px5,h / 6.5 + py + py5 + t_ls / 2)
+            elseif i == 6 then
+                obj.draw(offset_x[i] + px + px6,h / 3.5 + py + py6 + t_ls * 1.5)
+            elseif i == 7 then
+                obj.draw(offset_x[i] + px + px7,h / 2.3 + py + py7 + t_ls * 2.5)
+            end
+        elseif #sizes == 8 then
+            if i == 1 then
+                obj.draw(offset_x[i] + px + px1,-(h / 2.3) + py + py1 - t_ls * 3.5)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px2,-(h / 3.2) + py + py2 - t_ls * 2.5)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px3,-(h / 5.2) + py + py3 - t_ls * 1.5)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px4,-(h / 15.2) + py + py4 - t_ls / 2)
+            elseif i == 5 then
+                obj.draw(offset_x[i] + px + px5,h / 15.2 + py + py5 + t_ls / 2)
+            elseif i ==  6 then
+                obj.draw(offset_x[i] + px + px6,h / 5.2 + py + py6 + t_ls * 1.5)
+            elseif i == 7 then
+                obj.draw(offset_x[i] + px + px7,h / 3.2 + py + py7 + t_ls * 2.5)
+            elseif i == 8 then
+                obj.draw(offset_x[i] + px + px8,h / 2.3 + py + py8 + t_ls * 3.5)
+            end
+        elseif #sizes == 9 then
+            if i == 1 then
+                obj.draw(offset_x[i] + px + px1,-(h / 2.25) + py + py1 - t_ls * 3.5)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px2,-(h / 3) + py + py2 - t_ls * 2.5)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px3,-(h / 4.4) + py + py3 - t_ls * 1.5)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px4,-(h / 9) + py + py4 - t_ls / 2)
+            elseif i == 5 then
+                obj.draw(offset_x[i] + px + px5,0 + py + py5)
+            elseif i == 6 then
+                obj.draw(offset_x[i] + px + px6,h / 9 + py + py6 + t_ls / 2)
+            elseif i == 7 then
+                obj.draw(offset_x[i] + px + px7,h / 4.4 + py + py7 + t_ls * 1.5)
+            elseif i == 8 then
+                obj.draw(offset_x[i] + px + px8,h / 3 + py + py8 + t_ls * 2.5)
+            elseif i == 9 then
+                obj.draw(offset_x[i] + px + px9,h / 2.25 + py + py9 + t_ls * 3.5)
+            end
+        elseif #sizes == 10 then
+            if i == 1 then
+                obj.draw(offset_x[i] + px + px1,-(h / 2.25) + py + py1 - t_ls * 4.5)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px2,-(h / 2.9) + py + py2 - t_ls * 3.5)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px3,-(h / 4) + py + py3 - t_ls * 2.5)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px4,-(h / 7) + py + py4 - t_ls * 1.5)
+            elseif i == 5 then
+                obj.draw(offset_x[i] + px + px5,-(h / 20) + py + py5 + t_ls / 2)
+            elseif i == 6 then
+                obj.draw(offset_x[i] + px + px6,h / 20 + py + py6 + t_ls / 2)
+            elseif i == 7 then
+                obj.draw(offset_x[i] + px + px7,h / 7 + py + py7 + t_ls * 1.5)
+            elseif i == 8 then
+                obj.draw(offset_x[i] + px + px8,h / 4 + py + py8 + t_ls * 2.5)
+            elseif i == 9 then
+                obj.draw(offset_x[i] + px + px9,h / 2.9 + py + py9 + t_ls * 3.5)
+            elseif i == 10 then
+                obj.draw(offset_x[i] + px + px10,h / 2.25 + py + py10 + t_ls * 4.5)
+            end
+        end
+    elseif zabuton_type == 1 then -- 全体
+        -- ここはxを*3したらぴったりサイズが一致したが、なぜ*3をしたらぴったりはまるかは正直わからない。
+        obj.effect("リサイズ","拡大率",100.000,"X",w + sx,"Y",h + sy,"補間なし",0,"ピクセル数でサイズ指定",0)
+        obj.effect("縁取り","サイズ",frame_size,"ぼかし",5,"縁色",frame_col)
+        obj.draw(0 + px,0 + py)
+    end
+end
+
+-- 元テキストの再描画とバッファ書き戻し
+obj.copybuffer("object","cache:org")
+obj.draw()
+
+obj.setoption("drawtarget","framebuffer")
+obj.load("tempbuffer")
+
+-- 文字ごとに個別オブジェクトだった場合、座標を復元
+if is_multi then
+    obj.ox,obj.oy,obj.oz,obj.cx,obj.cy,obj.cz = ox,oy,oz,cx,cy,cz
+end
