@@ -58,17 +58,12 @@
 --track@py10:Y位置10,-1000,1000,0,1
 --group
 
---group:その他,true
---track@alpha:透明度,0,100,100,1
---group
-
 --group:図形,true
 --select@shapes:図形=1,背景=0,四角形=1,円=2,三角形=3
 --color@shape_col:図形色,0x960a0a
 --group
 
 --group:装飾,true
---select@acce:装飾=0,水玉=0,ストライプ=1,星=3
 --track@frame_size:縁取り,0,100,0,1
 --color@frame_col:縁色,0xffffff
 --group
