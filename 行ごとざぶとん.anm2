@@ -1,3 +1,5 @@
+--lable:装飾
+
 --select@zabuton_type:ざぶとんタイプ=0,行ごと=0,全体=1
 
 --group:サイズ,true
