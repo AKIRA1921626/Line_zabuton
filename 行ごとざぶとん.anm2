@@ -3,11 +3,11 @@
 --select@zabuton_type:ざぶとんタイプ=0,行ごと=0,全体=1
 
 --group:サイズ,true
---track@sx:Xサイズ,-1000,1000,0,1
---track@sy:Yサイズ,-1000,1000,0,1
+--track@sx:Xサイズ,-1000,1000,170,1
+--track@sy:Yサイズ,-1000,1000,70,1
 --group
 
---group:個別1~10サイズ,flase
+--group:個別1~10サイズ,false
 --track@sx1:Xサイズ1,-1000,1000,0,1
 --track@sy1:Yサイズ1,-1000,1000,0,1
 --track@sx2:Xサイズ2,-1000,1000,0,1
@@ -35,7 +35,7 @@
 --track@py:Y位置,-1000,1000,0,1
 --group
 
---group:個別1~10位置,flase
+--group:個別1~10位置,false
 --track@px1:X位置1,-1000,1000,0,1
 --track@py1:Y位置1,-1000,1000,0,1
 --track@px2:X位置2,-1000,1000,0,1
