@@ -187,34 +187,27 @@ for i = 1, #sizes do
     end
 end
 
-for i = 1,#sizes do    
+if zabuton_type == 0 then -- 行ごと
+    for i = 1,#sizes do
     obj.load("figure",shape_name,shape_col,100)
-    if zabuton_type == 0 then -- 行ごと
-        if i == 1 then
-            -- ここはxを*3したらぴったりサイズが一致したが、なぜ*3をしたらぴったりはまるかは正直わからない。
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx1 + t_cs * 4,"Y",sizes[i][2] + sy + sy1,"補間なし",0,"ピクセル数でサイズ指定",0)
-        elseif i == 2  then
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx2 + t_cs * 3,"Y",sizes[i][2] + sy + sy2,"補間なし",0,"ピクセル数でサイズ指定",0)
-        elseif i == 3  then
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx3,"Y",sizes[i][2] + sy + sy3,"補間なし",0,"ピクセル数でサイズ指定",0)
-        elseif i == 4 then
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx4,"Y",sizes[i][2] + sy + sy4,"補間なし",0,"ピクセル数でサイズ指定",0)
-        elseif i == 5 then
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx5,"Y",sizes[i][2] + sy + sy5,"補間なし",0,"ピクセル数でサイズ指定",0)
-        elseif i == 6 then
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx6,"Y",sizes[i][2] + sy + sy6,"補間なし",0,"ピクセル数でサイズ指定",0)
-        elseif i == 7 then
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx7,"Y",sizes[i][2] + sy + sy7,"補間なし",0,"ピクセル数でサイズ指定",0)
-        elseif i == 8 then
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx8,"Y",sizes[i][2] + sy + sy8,"補間なし",0,"ピクセル数でサイズ指定",0)
-        elseif i == 9 then
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx9,"Y",sizes[i][2] + sy + sy9,"補間なし",0,"ピクセル数でサイズ指定",0)
-        elseif i == 10 then
-            obj.effect("リサイズ","拡大率",100.000 * size / 100,"X",sizes[i][1] * 3 + sx + sx10,"Y",sizes[i][2] + sy + sy10,"補間なし",0,"ピクセル数でサイズ指定",0)
+        -- sxN, syN をテーブルとしてまとめる（スクリプト初期化部分などで定義）
+        local sxs = { sx1, sx2, sx3, sx4, sx5, sx6, sx7, sx8, sx9, sx10 }
+        local sys = { sy1, sy2, sy3, sy4, sy5, sy6, sy7, sy8, sy9, sy10 }
+
+        -- ここはxを*3する変数。*3したらぴったりサイズが一致したが、なぜ*3をしたらぴったりはまるかは正直わからない。
+        local LOCAL_SCALE_FACTOR = 3
+
+        -- 処理部分：iの範囲チェックと単一呼び出しへの集約
+        if sizes[i] and sxs[i] and sys[i] then
+            local scale = 100.0 * size / 100
+            local posX = sizes[i][1] * LOCAL_SCALE_FACTOR + sx + sxs[i]
+            local posY = sizes[i][2] + sy + sys[i]
+
+            obj.effect("リサイズ", "拡大率", scale, "X", posX, "Y", posY, "補間なし", 0, "ピクセル数でサイズ指定", 0)
         end
         obj.effect("縁取り","サイズ",frame_size,"ぼかし",5,"縁色",frame_col)
         if #sizes == 1 then
-            obj.draw(offset_x[i] + px + px1,0 + py + py)
+            obj.draw(offset_x[i] + px + px1,0 + py + py,0,1,alpha/100)
         elseif #sizes == 2 then
             if i == 1 then
                 obj.draw(offset_x[i] + px + px1,offset_y[i] - (h / 4) + py + py1 - t_ls / 4,0,1,alpha/100)
@@ -273,7 +266,7 @@ for i = 1,#sizes do
             elseif i == 3 then
                 obj.draw(offset_x[i] + px + px3,offset_y[i] * (i+3) - (h / 6.5) + py + py3 - t_ls / 15,0,1,alpha/100)
             elseif i == 4 then
-                obj.draw(offset_x[i] + px + px4,offset_y[i] * (i+2) + py + py4)
+                obj.draw(offset_x[i] + px + px4,offset_y[i] * (i+2) + py + py4,0,1,alpha/100)
             elseif i == 5 then
                 obj.draw(offset_x[i] + px + px5,offset_y[i] * (i+1.2) + h / 6.5 + py + py5 + t_ls / 15,0,1,alpha/100)
             elseif i == 6 then
@@ -342,12 +335,13 @@ for i = 1,#sizes do
                 obj.draw(offset_x[i] + px + px10,offset_y[i] * (i-1) + h / 2.25 + py + py10 + t_ls / 2,0,1,alpha/100)
             end
         end
-    elseif zabuton_type == 1 then -- 全体
-        -- ここはxを*3したらぴったりサイズが一致したが、なぜ*3をしたらぴったりはまるかは正直わからない。
-        obj.effect("リサイズ","拡大率",100.000,"X",w + sx,"Y",h + sy,"補間なし",0,"ピクセル数でサイズ指定",0)
-        obj.effect("縁取り","サイズ",frame_size,"ぼかし",5,"縁色",frame_col)
-        obj.draw(0 + px,0 + py)
     end
+elseif zabuton_type == 1 then -- 全体
+    obj.load("figure",shape_name,shape_col,100)
+    -- ここはxを*3したらぴったりサイズが一致したが、なぜ*3をしたらぴったりはまるかは正直わからない。
+    obj.effect("リサイズ","拡大率",100.000,"X",w + sx,"Y",h + sy,"補間なし",0,"ピクセル数でサイズ指定",0)
+    obj.effect("縁取り","サイズ",frame_size,"ぼかし",5,"縁色",frame_col)
+    obj.draw(0 + px,0 + py,0,1,alpha/100)
 end
 
 -- 元テキストの再描画とバッファ書き戻し
