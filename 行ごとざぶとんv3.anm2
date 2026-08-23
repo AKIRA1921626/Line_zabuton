@@ -231,7 +231,7 @@ for i = 1, #sizes do
         text_offset_y = 0
     else
         -- 「下」
-        text_offset_y = offset_y[i] - ((h / 2) / lb)
+        text_offset_y = -(offset_y[i] + (h / lb))
     end
 end
 -- 元テキストの再描画とバッファ書き戻し
