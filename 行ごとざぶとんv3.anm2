@@ -251,3 +251,24 @@ obj.load("tempbuffer")
 if is_multi then
     obj.ox, obj.oy, obj.oz, obj.cx, obj.cy, obj.cz = ox, oy, oz, cx, cy, cz
 end
+
+local o_ls = 0
+if align_num >= 0 and align_num <= 2 then
+    if lb == 1 then
+        o_ls = 0
+    elseif lb == 2 then
+        o_ls = obj.cy - t_ls/4
+    elseif lb == 3 then
+        o_ls = obj.cy - t_ls/3
+    end
+    obj.cy = o_ls
+elseif align_num >= 6 and align_num <= 8 then
+    if lb == 1 then
+        o_ls = 0
+    elseif lb == 2 then
+        o_ls = obj.cy + t_ls/4
+    elseif lb == 3 then
+        o_ls = obj.cy + t_ls/3
+    end
+    obj.cy = o_ls
+end
