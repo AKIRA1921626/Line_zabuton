@@ -310,129 +310,129 @@ function M.draw(i, params)
             obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + sizes[i][2], 0, 1, alpha/100)
         elseif total_lines == 2 then
             if i == 1 then
-                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/2 - sizes[i][2], 0, 1, alpha/100)
-            else
                 obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/2 + sizes[i][2], 0, 1, alpha/100)
+            else
+                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/2 - sizes[i][2], 0, 1, alpha/100)
             end
         elseif total_lines == 3 then
             if i == 1 then
-                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/3 - sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/1.5 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
                 obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/3 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 3 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/1.5 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/3 - sizes[i][2], 0, 1, alpha/100)
             end
         elseif total_lines == 4 then
             if i == 1 then
-                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/4 - sizes[i][2], 0, 1, alpha/100)
-            elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/4 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 3 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/2 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 4 then
                 obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/1.35 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/2 + sizes[i][2], 0, 1, alpha/100)   
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/4 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/4 - sizes[i][2], 0, 1, alpha/100)
             end
         elseif total_lines == 5 then
             if i == 1 then
-                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/5 - sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/1.27 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/5 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/1.7 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 3 then
                 obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/2.5 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 4 then
-                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/1.7 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/5 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 5 then
-                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/1.27 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/5 - sizes[i][2], 0, 1, alpha/100)
             end
         elseif total_lines == 6 then
             if i == 1 then
-                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/6 - sizes[i][2], 0, 1, alpha/100)
-            elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/6 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 3 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/3.1 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 4 then
-                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/2.05 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 5 then
-                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/1.52 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 6 then
                 obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 - h/1.21 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/1.52 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/2.05 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/3.1 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 5 then
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/6 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 6 then
+                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/6 - sizes[i][2], 0, 1, alpha/100)
             end
         elseif total_lines == 7 then
             if i == 1 then
-                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/7 - sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px7, offset_y[i] + py + py7 - h/1.18 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/7 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 - h/1.41 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 3 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/3.55 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/1.77 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 4 then
                 obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/2.35 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 5 then
-                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/1.77 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/3.55 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 6 then
-                obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 - h/1.41 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/7 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 7 then
-                obj.draw(offset_x[i] + px + px7, offset_y[i] + py + py7 - h/1.18 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/7 - sizes[i][2], 0, 1, alpha/100)
             end
         elseif total_lines == 8 then
             if i == 1 then
-                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/8 - sizes[i][2], 0, 1, alpha/100)
-            elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/8 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 3 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/4 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 4 then
-                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/2.7 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 5 then
-                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/2 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 6 then
-                obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 - h/1.61 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 7 then
-                obj.draw(offset_x[i] + px + px7, offset_y[i] + py + py7 - h/1.34 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 8 then
                 obj.draw(offset_x[i] + px + px8, offset_y[i] + py + py8 - h/1.15 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px7, offset_y[i] + py + py7 - h/1.34 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 - h/1.61 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/2 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 5 then
+                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/2.7 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 6 then
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/4 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 7 then
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/8 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 8 then
+                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/8 - sizes[i][2], 0, 1, alpha/100)
             end
         elseif total_lines == 9 then
             if i == 1 then
-                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/9 - sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px9, offset_y[i] + py + py9 - h/1.13 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/9 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px8, offset_y[i] + py + py8 - h/1.29 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 3 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/4.5 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px7, offset_y[i] + py + py7 - h/1.51 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 4 then
-                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/3.05 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 - h/1.81 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 5 then
                 obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/2.3 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 6 then
-                obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 - h/1.81 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/3.05 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 7 then
-                obj.draw(offset_x[i] + px + px7, offset_y[i] + py + py7 - h/1.51 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/4.5 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 8 then
-                obj.draw(offset_x[i] + px + px8, offset_y[i] + py + py8 - h/1.29 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/9 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 9 then
-                obj.draw(offset_x[i] + px + px9, offset_y[i] + py + py9 - h/1.13 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/9 - sizes[i][2], 0, 1, alpha/100)
             end
         elseif total_lines == 10 then
             if i == 1 then
-                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/10 - sizes[i][2], 0, 1, alpha/100)
-            elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/10 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 3 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/5.05 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 4 then
-                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/3.35 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 5 then
-                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/2.51 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 6 then
-                obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 - h/2.01 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 7 then
-                obj.draw(offset_x[i] + px + px7, offset_y[i] + py + py7 - h/1.68 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 8 then
-                obj.draw(offset_x[i] + px + px8, offset_y[i] + py + py8 - h/1.435 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 9 then
-                obj.draw(offset_x[i] + px + px9, offset_y[i] + py + py9 - h/1.26 + sizes[i][2], 0, 1, alpha/100)
-            elseif i == 10 then
                 obj.draw(offset_x[i] + px + px10, offset_y[i] + py + py10 - h/1.12 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 2 then
+                obj.draw(offset_x[i] + px + px9, offset_y[i] + py + py9 - h/1.26 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 3 then
+                obj.draw(offset_x[i] + px + px8, offset_y[i] + py + py8 - h/1.435 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 4 then
+                obj.draw(offset_x[i] + px + px7, offset_y[i] + py + py7 - h/1.68 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 5 then
+                obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 - h/2.01 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 6 then
+                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 - h/2.51 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 7 then
+                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/3.35 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 8 then
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/5.05 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 9 then
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/10 + sizes[i][2], 0, 1, alpha/100)
+            elseif i == 10 then
+                obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/10 - sizes[i][2], 0, 1, alpha/100)
             end
         end
     end
