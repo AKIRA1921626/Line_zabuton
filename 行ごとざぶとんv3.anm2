@@ -219,6 +219,21 @@ end
 
 local text_offset_x = 0
 local text_offset_y = 0
+for i = 1, #sizes do
+    -- オフセット初期値は0
+    text_offset_y = 0
+    -- align_num に応じた座標ズレの補正
+    if align_num <= 2 then
+        -- [上]
+        text_offset_y = -(offset_y[i] - (h  / lb))
+    elseif align_num <= 5 then
+        -- 「中央」
+        text_offset_y = 0
+    else
+        -- 「下」
+        text_offset_y = offset_y[i] - ((h / 2) / lb)
+    end
+end
 -- 元テキストの再描画とバッファ書き戻し
 obj.copybuffer("object", "cache:org")
 if zabuton_type == 0 then
