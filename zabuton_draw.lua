@@ -12,6 +12,11 @@ function M.draw(i, params)
     local py = params.py
     local h = params.h
     local alpha = params.alpha
+    -- テキスト自体のトラックバーの「サイズ」の数値
+    local size = params.size 
+    -- 各行のサイズ一覧を配列テーブルとして取得する関数
+    -- sizes[1][1],seizes[1][2]のようになっている。
+    -- 配列名:sizes, 配列要素[1][1] = w,配列要素[1][2] = h
     local sizes = params.sizes
     local total_lines = params.total_lines
     local t_cs = params.t_cs
@@ -181,7 +186,7 @@ function M.draw(i, params)
             if i == 1 then
                 obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 - h/3 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 + h/3 - sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 + h/3 - sizes[i][2] - t_ls / 3, 0, 1, alpha/100) -- [上][下]の3行目だけt_lsで行間を調整
             elseif i == 3 then
                 obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 + h/1.5 - sizes[i][2], 0, 1, alpha/100)
             end
@@ -318,7 +323,7 @@ function M.draw(i, params)
             if i == 1 then
                 obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/1.5 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/3 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/3 + sizes[i][2] + t_ls / 3, 0, 1, alpha/100) -- [上][下]の3行目だけt_lsで行間を調整
             elseif i == 3 then
                 obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/3 - sizes[i][2], 0, 1, alpha/100)
             end
@@ -326,7 +331,7 @@ function M.draw(i, params)
             if i == 1 then
                 obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 - h/1.35 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/2 + sizes[i][2], 0, 1, alpha/100)   
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/2 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 3 then
                 obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/4 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 4 then
