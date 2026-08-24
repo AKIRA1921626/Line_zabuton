@@ -57,9 +57,9 @@ function M.draw(i, params)
             if i == 1 then
                 obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 - h/2 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/4 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/4 + sizes[i][2] + t_ls / 4, 0, 1, alpha/100)
             elseif i == 3 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 + h/4 - sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 + h/4 - sizes[i][2] - t_ls / 4, 0, 1, alpha/100)
             elseif i == 4 then
                 obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 + h/2 - sizes[i][2], 0, 1, alpha/100)
             end
@@ -67,11 +67,11 @@ function M.draw(i, params)
             if i == 1 then
                 obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 - h/2 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/3.5 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/3.5 + sizes[i][2] + t_ls / 8, 0, 1, alpha/100)
             elseif i == 3 then
                 obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3, 0, 1, alpha/100)
             elseif i == 4 then
-                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 + h/3.5 - sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 + h/3.5 - sizes[i][2] - t_ls / 8, 0, 1, alpha/100)
             elseif i == 5 then
                 obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 + h/2 - sizes[i][2], 0, 1, alpha/100)
             end
@@ -79,13 +79,13 @@ function M.draw(i, params)
             if i == 1 then
                 obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 - h/2 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/3 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/3 + sizes[i][2] + t_ls / 6, 0, 1, alpha/100)
             elseif i == 3 then
-                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/6.5 + sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/6.5 + sizes[i][2] + t_ls / 3, 0, 1, alpha/100)
             elseif i == 4 then
-                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 + h/6.5 - sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px4, offset_y[i] + py + py4 + h/6.5 - sizes[i][2] - t_ls / 3, 0, 1, alpha/100)
             elseif i == 5 then
-                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 + h/3 - sizes[i][2], 0, 1, alpha/100)
+                obj.draw(offset_x[i] + px + px5, offset_y[i] + py + py5 + h/3 - sizes[i][2] - t_ls / 6, 0, 1, alpha/100)
             elseif i == 6 then
                 obj.draw(offset_x[i] + px + px6, offset_y[i] + py + py6 + h/2 - sizes[i][2], 0, 1, alpha/100)
             end
@@ -186,7 +186,7 @@ function M.draw(i, params)
             if i == 1 then
                 obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 - h/3 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 + h/3 - sizes[i][2] - t_ls / 3, 0, 1, alpha/100) -- [上][下]の3行目だけt_lsで行間を調整
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 + h/3 - sizes[i][2] - t_ls / 3, 0, 1, alpha/100)
             elseif i == 3 then
                 obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 + h/1.5 - sizes[i][2], 0, 1, alpha/100)
             end
@@ -323,7 +323,7 @@ function M.draw(i, params)
             if i == 1 then
                 obj.draw(offset_x[i] + px + px3, offset_y[i] + py + py3 - h/1.5 + sizes[i][2], 0, 1, alpha/100)
             elseif i == 2 then
-                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/3 + sizes[i][2] + t_ls / 3, 0, 1, alpha/100) -- [上][下]の3行目だけt_lsで行間を調整
+                obj.draw(offset_x[i] + px + px2, offset_y[i] + py + py2 - h/3 + sizes[i][2] + t_ls / 3, 0, 1, alpha/100)
             elseif i == 3 then
                 obj.draw(offset_x[i] + px + px1, offset_y[i] + py + py1 + h/3 - sizes[i][2], 0, 1, alpha/100)
             end
