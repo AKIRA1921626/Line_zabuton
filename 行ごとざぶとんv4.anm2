@@ -73,11 +73,6 @@
 --track@strength:色濃さ,0,100,100,1
 --group
 
---group:テクスチャ,true
---file@texture_path:テクスチャファイル
---select@blend:合成モード=0,通常[none]=0,加算[add]=1,減算[sub]=2,乗算[mul]=3,スクリーン[screen]=4,オーバーレイ[overlay]=5,比較(明)[light]=6,比較(暗)[dark]=7,輝度[brightness]=8,色差[chroma]=9,陰影[shadow]=10,明暗[light_dark]=11,差分[diff]=12,仮想バッファ[alpha_add]=13,仮想バッファ[alpha_max]=14,仮想バッファ[alpha_sub]=15,仮想バッファ[alpha_add2]=16,仮想バッファ[rgba_add]=17
---group
-
 --group:装飾,true
 --track@frame_size:縁取り,0,100,0,1
 --color@frame_col:縁色,0xffffff
