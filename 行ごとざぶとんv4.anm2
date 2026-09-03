@@ -63,7 +63,7 @@
 --group
 
 --group:図形,true
---select@shapes:図形=1,背景=0,四角形=1,円=2,三角形=3
+--figure@shapes:ざぶとん図形,四角形
 --color@shape_col:図形色,0x960a0a
 --group
 
@@ -92,10 +92,6 @@ local is_multi = obj.getoption("multi_object")
 
 -- 仮想画面の作成
 Akira.create_screen_tempbuffer()
-
--- トラックバーおよび選択肢の値の取得
-local shape_names = {[1] = "四角形", [2] = "円", [3] = "三角形"}
-local shape_name = shape_names[shapes] or "四角形"
 
 -- 行数の確認（ヘッダーヘルパー利用）
 local lb = Akira.line_break_confirmation()
@@ -204,10 +200,10 @@ if zabuton_type == 0 then -- 行ごと
                     obj.effect("単色化","強さ",strength,"色",img_col,"輝度を保持する",1)
                 end
             else
-                obj.load("figure", shape_name, shape_col, 100)
+                obj.load("figure", shapes, shape_col, 100)
             end
         else
-            obj.load("figure", shape_name, shape_col, 100)
+            obj.load("figure", shapes, shape_col, 100)
         end
         
         local sxs = { sx1, sx2, sx3, sx4, sx5, sx6, sx7, sx8, sx9, sx10 }
@@ -236,10 +232,10 @@ if zabuton_type == 1 then -- 全体
                 obj.effect("単色化","強さ",strength,"色",img_col,"輝度を保持する",1)
             end
         else
-            obj.load("figure", shape_name, shape_col, 100)
+            obj.load("figure", shapes, shape_col, 100)
         end
     else
-        obj.load("figure", shape_name, shape_col, 100)
+        obj.load("figure", shapes, shape_col, 100)
     end
     obj.effect("リサイズ", "拡大率", 100.000, "X", w + sx, "Y", h + sy, "補間なし", 0, "ピクセル数でサイズ指定", 0)
     obj.effect("縁取り", "サイズ", frame_size, "ぼかし", 5, "縁色", frame_col)
