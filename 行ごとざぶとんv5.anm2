@@ -1,0 +1,532 @@
+--label:装飾
+
+--select@zabuton_type:ざぶとんタイプ=0,行ごと=0,全体=1
+
+--group:サイズ,true
+--track@sx:Xサイズ,-1000,1000,170,1
+--track@sy:Yサイズ,-1000,1000,70,1
+--group
+
+--group:個別1~10サイズ,false
+--track@sx1:Xサイズ1,-1000,1000,0,1
+--track@sy1:Yサイズ1,-1000,1000,0,1
+--track@sx2:Xサイズ2,-1000,1000,0,1
+--track@sy2:Yサイズ2,-1000,1000,0,1
+--track@sx3:Xサイズ3,-1000,1000,0,1
+--track@sy3:Yサイズ3,-1000,1000,0,1
+--track@sx4:Xサイズ4,-1000,1000,0,1
+--track@sy4:Yサイズ4,-1000,1000,0,1
+--track@sx5:Xサイズ5,-1000,1000,0,1
+--track@sy5:Yサイズ5,-1000,1000,0,1
+--track@sx6:Xサイズ6,-1000,1000,0,1
+--track@sy6:Yサイズ6,-1000,1000,0,1
+--track@sx7:Xサイズ7,-1000,1000,0,1
+--track@sy7:Yサイズ7,-1000,1000,0,1
+--track@sx8:Xサイズ8,-1000,1000,0,1
+--track@sy8:Yサイズ8,-1000,1000,0,1
+--track@sx9:Xサイズ9,-1000,1000,0,1
+--track@sy9:Yサイズ9,-1000,1000,0,1
+--track@sx10:Xサイズ10,-1000,1000,0,1
+--track@sy10:Yサイズ10,-1000,1000,0,1
+--group
+
+--group:位置,true
+--track@px:X位置,-1000,1000,0,1
+--track@py:Y位置,-1000,1000,0,1
+--group
+
+--group:個別1~10位置,false
+--track@px1:X位置1,-1000,1000,0,1
+--track@py1:Y位置1,-1000,1000,0,1
+--track@px2:X位置2,-1000,1000,0,1
+--track@py2:Y位置2,-1000,1000,0,1
+--track@px3:X位置3,-1000,1000,0,1
+--track@py3:Y位置3,-1000,1000,0,1
+--track@px4:X位置4,-1000,1000,0,1
+--track@py4:Y位置4,-1000,1000,0,1
+--track@px5:X位置5,-1000,1000,0,1
+--track@py5:Y位置5,-1000,1000,0,1
+--track@px6:X位置6,-1000,1000,0,1
+--track@py6:Y位置6,-1000,1000,0,1
+--track@px7:X位置7,-1000,1000,0,1
+--track@py7:Y位置7,-1000,1000,0,1
+--track@px8:X位置8,-1000,1000,0,1
+--track@py8:Y位置8,-1000,1000,0,1
+--track@px9:X位置9,-1000,1000,0,1
+--track@py9:Y位置9,-1000,1000,0,1
+--track@px10:X位置10,-1000,1000,0,1
+--track@py10:Y位置10,-1000,1000,0,1
+--group
+
+--group:その他,true
+--track@alpha:透明度,0,100,100,1
+--group
+
+--group:図形,true
+--figure@shapes:ざぶとん図形,四角形
+--color@shape_col:図形色,0x960a0a
+--group
+
+--group:画像ファイル,true
+--file@img_path:画像ファイル
+--color@img_col:画像色,nil
+--track@strength:色濃さ,0,100,100,1
+--group
+
+--group:装飾,true
+--track@frame_size:縁取り,0,100,0,1
+--color@frame_col:縁色,0xffffff
+--group
+
+local Akira = require("AKIRA_aviutl2_helper")
+local draw_module = require("zabuton_draw_v3")
+
+-- ============================================================
+-- 文字コード（UTF-8 & Shift_JIS）両対応の文字数カウント関数
+-- ============================================================
+local function count_characters(s)
+    if not s or s == "" then return 0 end
+    local count = 0
+    local p = 1
+    local l = #s
+    while p <= l do
+        local b = string.byte(s, p)
+        if b < 128 then
+            p = p + 1
+        elseif (b >= 0xC2 and b <= 0xDF) then
+            p = p + 2
+        elseif (b >= 0xE0 and b <= 0xEF) then
+            p = p + 3
+        elseif (b >= 0xF0 and b <= 0xF4) then
+            p = p + 4
+        elseif (b >= 0x81 and b <= 0x9F) or (b >= 0xE0 and b <= 0xFC) then
+            p = p + 2
+        else
+            p = p + 1
+        end
+        count = count + 1
+    end
+    return count
+end
+
+-- ============================================================
+-- 制御文字（<w>, <c>, <r>）と改行のタイムラインを解析する関数
+-- ============================================================
+local function analyze_timeline(text, cur_time)
+    if not text then return {} end
+
+    -- 改行コードの統一（\r\n, \r, \\n を \n に変換）
+    local unified_text = text:gsub("\r\n", "\n"):gsub("\r", "\n"):gsub("\\n", "\n")
+
+    -- 行ごとに分割
+    local raw_lines = {}
+    for line_str in (unified_text .. "\n"):gmatch("(.-)\n") do
+        table.insert(raw_lines, line_str)
+    end
+
+    local current_time = 0
+    local speed = 0
+    local ok, spd = pcall(function() return obj.getvalue("テキスト", "表示速度") end)
+    if ok and spd and spd > 0 then speed = spd end
+
+    local char_times = {} -- 各文字の情報 { line, start_time, end_time }
+    local last_chunk_count = 0
+
+    for line_idx, line_str in ipairs(raw_lines) do
+        local pos = 1
+        local len = #line_str
+
+        while pos <= len do
+            -- 次のタグ "<...>" を検索
+            local tag_start, tag_end = string.find(line_str, "<[^>]->", pos)
+            if tag_start then
+                -- タグの前にある通常テキスト
+                if tag_start > pos then
+                    local plain = string.sub(line_str, pos, tag_start - 1)
+                    local num_chars = count_characters(plain)
+                    for _ = 1, num_chars do
+                        if speed > 0 then current_time = current_time + 1 / speed end
+                        table.insert(char_times, {
+                            line = line_idx,
+                            start_time = current_time,
+                            end_time = nil
+                        })
+                        last_chunk_count = last_chunk_count + 1
+                    end
+                end
+
+                -- タグの解析（余分な空白や小文字大文字にも完全対応）
+                local tag = string.sub(line_str, tag_start, tag_end)
+                local wv = tag:match("^<[wW]%s*([%d%.]+)%s*>$")
+                local wa = tag:match("^<[wW]%s*%*%s*([%d%.]+)%s*>$")
+                local cv = tag:match("^<[cC]%s*([%d%.]+)%s*>$")
+                local ca = tag:match("^<[cC]%s*%*%s*([%d%.]+)%s*>$")
+                local rv = tag:match("^<[rR]%s*([%d%.]+)%s*>$")
+
+                if wv then
+                    current_time = current_time + tonumber(wv)
+                    last_chunk_count = 0
+                elseif wa then
+                    current_time = current_time + last_chunk_count * tonumber(wa)
+                    last_chunk_count = 0
+                elseif cv then
+                    local d = tonumber(cv)
+                    for _, c in ipairs(char_times) do
+                        if not c.end_time then c.end_time = current_time + d end
+                    end
+                    current_time = current_time + d
+                    last_chunk_count = 0
+                elseif ca then
+                    local d = last_chunk_count * tonumber(ca)
+                    for _, c in ipairs(char_times) do
+                        if not c.end_time then c.end_time = current_time + d end
+                    end
+                    current_time = current_time + d
+                    last_chunk_count = 0
+                elseif rv then
+                    speed = tonumber(rv)
+                end
+
+                pos = tag_end + 1
+            else
+                -- 残りの通常テキスト
+                local plain = string.sub(line_str, pos)
+                local num_chars = count_characters(plain)
+                for _ = 1, num_chars do
+                    if speed > 0 then current_time = current_time + 1 / speed end
+                    table.insert(char_times, {
+                        line = line_idx,
+                        start_time = current_time,
+                        end_time = nil
+                    })
+                    last_chunk_count = last_chunk_count + 1
+                end
+                break
+            end
+        end
+        -- 改行をまたぐときも current_time は保持される
+    end
+
+    -- 行ごとの文字総数と表示状態の集計
+    local line_total = {}
+    for _, c in ipairs(char_times) do
+        local l = c.line
+        line_total[l] = (line_total[l] or 0) + 1
+    end
+
+    local line_info = {}
+    local line_char_idx = {}
+    for _, c in ipairs(char_times) do
+        local l = c.line
+        if not line_info[l] then
+            line_info[l] = { total_chars = line_total[l], first_vis = nil, last_vis = nil, vis_count = 0 }
+            line_char_idx[l] = 0
+        end
+        line_char_idx[l] = line_char_idx[l] + 1
+        local char_pos = line_char_idx[l]
+        local is_vis = (cur_time >= c.start_time) and (not c.end_time or cur_time < c.end_time)
+        if is_vis then
+            if not line_info[l].first_vis then line_info[l].first_vis = char_pos end
+            line_info[l].last_vis = char_pos
+            line_info[l].vis_count = line_info[l].vis_count + 1
+        end
+    end
+
+    -- 文字を含まない空行の場合
+    for l = 1, #raw_lines do
+        if not line_info[l] then
+            line_info[l] = { total_chars = 0, first_vis = 1, last_vis = 1, vis_count = 0 }
+        end
+    end
+
+    return line_info
+end
+
+obj.copybuffer("cache:org","object")
+
+-- 文字ごとに個別オブジェクトがONだったとき用に、座標を復元するように作成した変数
+local ox,oy,oz,cx,cy,cz = obj.ox,obj.oy,obj.oz,obj.cx,obj.cy,obj.cz
+local w,h = obj.w,obj.h
+
+-- 文字ごとに個別オブジェクトか否かを判定する用の変数
+local is_multi = obj.getoption("multi_object")
+
+-- 仮想画面の作成
+Akira.create_screen_tempbuffer()
+
+-- 行数の確認（ヘッダーヘルパー利用）
+local lb = Akira.line_break_confirmation()
+if lb < 1 then lb = 1 end
+
+local size = obj.getvalue("テキスト","サイズ")
+local t_cs = obj.getvalue("テキスト","字間")
+local t_ls = obj.getvalue("テキスト","行間")
+
+-- 各行のサイズ一覧を配列テーブルとして取得する関数（v4と完全に同一）
+local sizes = Akira.get_line_sizes()
+
+local align = obj.getvalue("テキスト","文字揃え")
+local align_type_number = {
+    ["左寄せ[上]"] = 0,
+    ["中央揃え[上]"] = 1,
+    ["右寄せ[上]"] = 2,
+    ["左寄せ[中]"] = 3,
+    ["中央揃え[中]"] = 4,
+    ["右寄せ[中]"] = 5,
+    ["左寄せ[下]"] = 6,
+    ["中央揃え[下]"] = 7,
+    ["右寄せ[下]"] = 8,
+    ["縦書 上寄[右]"] = 9,
+    ["縦書 中央[右]"] = 10,
+    ["縦書 下寄[右]"] = 11,
+    ["縦書 上寄[中]"] = 12,
+    ["縦書 中央[中]"] = 13,
+    ["縦書 下寄[中]"] = 14,
+    ["縦書 上寄[左]"] = 15,
+    ["縦書 中央[左]"] = 16,
+    ["縦書 下寄[左]"] = 17,
+}
+local align_num = align_type_number[align] or 4
+
+local max_width = 0
+for i = 1, #sizes do
+    max_width = math.max(max_width, sizes[i][1])
+end
+
+local offset_x = {}
+for i = 1, #sizes do
+    local w_i = sizes[i][1]
+    if w_i == max_width then
+        offset_x[i] = 0
+    else
+        if align_num == 0 or align_num == 3 or align_num == 6 then
+            offset_x[i] = -(max_width - w_i) * 1.5 * (size / 100)
+        elseif align_num == 2 or align_num == 5 or align_num == 8 then
+            offset_x[i] = (max_width - w_i) * 1.5 * (size / 100)
+        else
+            offset_x[i] = 0
+        end
+    end
+end
+
+local offset_y = {}
+for i = 1, #sizes do
+    local h_i = sizes[i][1]
+    offset_y[i] = 0
+    if align_num <= 2 then
+        offset_y[i] = -(offset_y[i] - ((h / 2) / lb))
+    elseif align_num <= 5 then
+        offset_y[i] = 0
+    else
+        offset_y[i] = offset_y[i] - ((h / 2) / lb)
+    end
+end
+
+-- 制御文字タイムライン解析の実行
+local raw_text = obj.getvalue("テキスト", "テキスト")
+local cur_time = obj.time
+local line_info = analyze_timeline(raw_text, cur_time)
+
+-- 行が表示中（1文字以上表示されている）かどうか
+local function is_line_visible(li)
+    if not li or li.total_chars == 0 then return true end
+    return li.vis_count > 0
+end
+
+-- モジュール描画に必要な全パラメタをまとめるテーブル構造
+local params = {
+    align_num = align_num,
+    size = size,
+    sizes = sizes,
+    total_lines = #sizes,
+    offset_x = offset_x,
+    offset_y = offset_y,
+    px = px, py = py,
+    h = h,
+    alpha = alpha,
+    pxs = { px1, px2, px3, px4, px5, px6, px7, px8, px9, px10 },
+    pys = { py1, py2, py3, py4, py5, py6, py7, py8, py9, py10 },
+    t_cs = t_cs,
+    t_ls = t_ls,
+}
+
+if zabuton_type == 0 then -- 行ごと
+    for i = 1, #sizes do
+        local li = line_info[i]
+
+        -- 改行後にまだ文字が表示されていない行、またはクリアされた行はスキップ
+        if is_line_visible(li) and sizes[i] then
+            if img_path ~= "" then
+                local success_or_failure = obj.load("image", img_path)
+                if success_or_failure then
+                    if img_col ~= nil then
+                        obj.effect("単色化","強さ",strength,"色",img_col,"輝度を保持する",1)
+                    end
+                else
+                    if obj.getinfo("saving")==false then
+                        obj.load("figure", shapes, shape_col, 100)
+                    else
+                        obj.load("figure", shapes, shape_col, 10000)
+                    end
+                end
+            else
+                if obj.getinfo("saving")==false then
+                    obj.load("figure", shapes, shape_col, 100)
+                else
+                    obj.load("figure", shapes, shape_col, 10000)
+                end
+            end
+            
+            local sxs = { sx1, sx2, sx3, sx4, sx5, sx6, sx7, sx8, sx9, sx10 }
+            local sys = { sy1, sy2, sy3, sy4, sy5, sy6, sy7, sy8, sy9, sy10 }
+            local LOCAL_SCALE_FACTOR = 3
+
+            -- v4と完全に一致するサイズ・リサイズ計算（XにはposXをそのまま渡す）
+            local scale = 100.0 * size / 100
+            local posX = sizes[i][1] * LOCAL_SCALE_FACTOR + sx + (sxs[i] or 0)
+            local posY = sizes[i][2] + sy + (sys[i] or 0)
+
+            obj.effect("リサイズ", "拡大率", scale, "X", posX, "Y", posY, "補間なし", 0, "ピクセル数でサイズ指定", 1)
+            obj.effect("縁取り", "サイズ", frame_size, "ぼかし", 5, "縁色", frame_col)
+
+            -- 行内での<w><c>に伴うクリッピング（非表示文字幅のみを削る）
+            local clip_left = 0
+            local clip_right = 0
+
+            if li and li.total_chars > 0 and li.vis_count > 0 then
+                local total = li.total_chars
+                local head_hidden = (li.first_vis or 1) - 1
+                local tail_hidden = total - (li.last_vis or total)
+                local text_w = sizes[i][1] * LOCAL_SCALE_FACTOR
+                local clip_head_px = text_w * (head_hidden / total)
+                local clip_tail_px = text_w * (tail_hidden / total)
+
+                -- 右寄せ・左寄せ・中央揃え問わず、文字は左側に配置されるため、
+                -- 末尾（待機分）は右を削り（左シフト）、先頭（クリア分）は左を削る（右シフト）
+                clip_left  = clip_head_px
+                clip_right = clip_tail_px
+            end
+
+            if clip_left > 0 or clip_right > 0 then
+                obj.effect("クリッピング", "上", 0, "下", 0, "左", clip_left, "右", clip_right)
+            end
+            
+            -- クリッピングで削られた分だけ座布団の中心位置を補正し、テキスト背後に追従
+            local clip_dx = (clip_left - clip_right) / 2
+            local orig_offset_x = params.offset_x[i]
+            params.offset_x[i] = orig_offset_x + clip_dx
+
+            -- 現在行 index (i) と パラメタを外部モジュールへ渡す
+            draw_module.draw(i, params)
+
+            -- パラメータを復元
+            params.offset_x[i] = orig_offset_x
+        end
+    end
+end
+
+if zabuton_type == 1 then -- 全体
+    local total_check_lines = math.max(lb, #sizes)
+    local any_visible = false
+    for l = 1, total_check_lines do
+        if is_line_visible(line_info[l]) then
+            any_visible = true
+            break
+        end
+    end
+
+    -- 全行が非表示（まだどの文字も出ていない、または全行クリアされた）の場合は描画しない
+    if any_visible then
+        if img_path ~= "" then
+            local success_or_failure = obj.load("image", img_path)
+            if success_or_failure then
+                if img_col ~= nil then
+                    obj.effect("単色化","強さ",strength,"色",img_col,"輝度を保持する",1)
+                end
+            else
+                if obj.getinfo("saving")==false then
+                    obj.load("figure", shapes, shape_col, 100)
+                else
+                    obj.load("figure", shapes, shape_col, 10000)
+                end
+            end
+        else
+            if obj.getinfo("saving")==false then
+                obj.load("figure", shapes, shape_col, 100)
+            else
+                obj.load("figure", shapes, shape_col, 10000)
+            end
+        end
+
+        obj.effect("リサイズ", "拡大率", 100.000, "X", w + sx, "Y", h + sy, "補間なし", 0, "ピクセル数でサイズ指定", 0)
+        obj.effect("縁取り", "サイズ", frame_size, "ぼかし", 5, "縁色", frame_col)
+
+        -- 改行時の上下クリッピング計算
+        local hidden_top = 0
+        for l = 1, total_check_lines do
+            if not is_line_visible(line_info[l]) then
+                hidden_top = hidden_top + 1
+            else
+                break
+            end
+        end
+
+        local hidden_bottom = 0
+        for l = total_check_lines, 1, -1 do
+            if not is_line_visible(line_info[l]) then
+                hidden_bottom = hidden_bottom + 1
+            else
+                break
+            end
+        end
+
+        local clip_h_per_line = (h + sy) / math.max(1, total_check_lines)
+        local clip_top    = clip_h_per_line * hidden_top
+        local clip_bottom = clip_h_per_line * hidden_bottom
+
+        if clip_top > 0 or clip_bottom > 0 then
+            obj.effect("クリッピング", "上", clip_top, "下", clip_bottom, "左", 0, "右", 0)
+        end
+
+        -- クリッピングで削られた分だけ座布団の上下中心位置を補正
+        local clip_dy = (clip_top - clip_bottom) / 2
+        obj.draw(0 + px, 0 + py + clip_dy, 0, 1, alpha / 100)
+    end
+end
+
+local text_offset_x = 0
+local text_offset_y = 0
+for i = 1, #sizes do
+    text_offset_y = 0
+    if align_num <= 2 then
+        text_offset_y = -(offset_y[i] - (h / lb))
+    elseif align_num <= 5 then
+        text_offset_y = 0
+    else
+        text_offset_y = -(offset_y[i] + (h / lb))
+    end
+end
+
+-- 元テキストの再描画とバッファ書き戻し
+obj.copybuffer("object", "cache:org")
+if zabuton_type == 0 then
+    for i = 1, #sizes do
+        obj.draw(text_offset_x, text_offset_y * (lb - 1))
+    end
+elseif zabuton_type == 1 then
+    obj.draw()
+end
+
+obj.setoption("drawtarget", "framebuffer")
+obj.load("tempbuffer")
+
+if is_multi then
+    obj.ox, obj.oy, obj.oz, obj.cx, obj.cy, obj.cz = ox, oy, oz, cx, cy, cz
+end
+
+-- 4行目以降も正確に obj.cy を補正するように一般公式を適用する
+if align_num >= 0 and align_num <= 2 then
+    obj.cy = obj.cy - t_ls * (lb - 1) / (2 * lb)
+elseif align_num >= 6 and align_num <= 8 then
+    obj.cy = obj.cy + t_ls * (lb - 1) / (2 * lb)
+end
