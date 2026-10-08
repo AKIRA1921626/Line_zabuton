@@ -6,8 +6,19 @@
 座布団の表示位置は正確ではなく、「見た感じこの辺だろう」ぐらいの製作者の感覚で設定されています。  
 ~~また、AI談によれば、同じような処理を何度も繰り返しており、そこはテーブルなどにまとめたほうが保守性可読性が向上するらしい。~~  
 v4での改変に伴いAIにリファクタリングしてもらった。  
+  
+「行ごとざぶとんv5.anm2」「AKIRA\_aviutl2\_helper.lua」「zabuton\_draw\_v3.lua」を同じフォルダに入れた状態でご使用ください。  
 
-「行ごとざぶとんv4.anm2」「AKIRA\_aviutl2\_helper.lua」「zabuton\_draw_v2.lua」を同じフォルダに入れた状態でご使用ください。
+各種スクリプトの名称のv(x)は、xが大きい者の方が新しく作成した（改良した）ものです。  
+それにともない、新しい機能を追加したりしましたが、出来なくなったこともあり、機能が安定しないこともあります。  
+基本的には一番新しいものの使用を推奨します。  
+  
+各種スクリプトの関係（同じ行の物は両方とも同じフォルダに配置することで機能する。）:  
+「行ごとざぶとん.anm2」「AKIRA_aviutl2_helper.lua」  
+「行ごとざぶとんv2.anm2」「AKIRA_aviutl2_helper.lua」  
+「行ごとざぶとんv3.anm2」「AKIRA_aviutl2_helper.lua」「zabuton_draw.lua」  
+「行ごとざぶとんv4.anm2」「AKIRA_aviutl2_helper.lua」「zabuton_draw_v2.lua」  
+「行ごとざぶとんv5.anm2」「AKIRA_aviutl2_helper.lua」「zabuton_draw_v3.lua」  
 
-二次配布可、改変可、クレジット不要
+二次配布可、改変可、クレジット不要  
 
