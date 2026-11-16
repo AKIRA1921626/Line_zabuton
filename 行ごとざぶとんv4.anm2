@@ -200,10 +200,24 @@ if zabuton_type == 0 then -- 行ごと
                     obj.effect("単色化","強さ",strength,"色",img_col,"輝度を保持する",1)
                 end
             else
-                obj.load("figure", shapes, shape_col, 100)
+                obj.load("figure", shapes, shape_col, 1000)
+                --[[ --ここの処理があると、出力後の動画で、座布団の真ん中に空白が生じるようになるため、コメントアウトし、常にサイズ1000をload
+                if obj.getinfo("saving")==false then
+                    obj.load("figure", shapes, shape_col, 100) -- 編集中は100pxの図形をロードし、軽さを優先
+                else
+                    obj.load("figure", shapes, shape_col, 10000) -- 出力中は10000pxの図形をロードし、綺麗さを優先
+                end
+                ]]
             end
         else
-            obj.load("figure", shapes, shape_col, 100)
+            obj.load("figure", shapes, shape_col, 1000)
+            --[[ --ここの処理があると、出力後の動画で、座布団の真ん中に空白が生じるようになるため、コメントアウトし、常にサイズ1000をload
+            if obj.getinfo("saving")==false then
+                obj.load("figure", shapes, shape_col, 100) -- 編集中は100pxの図形をロードし、軽さを優先
+            else
+                obj.load("figure", shapes, shape_col, 10000) -- 出力中は10000pxの図形をロードし、綺麗さを優先
+            end
+            ]]
         end
         
         local sxs = { sx1, sx2, sx3, sx4, sx5, sx6, sx7, sx8, sx9, sx10 }
@@ -232,10 +246,18 @@ if zabuton_type == 1 then -- 全体
                 obj.effect("単色化","強さ",strength,"色",img_col,"輝度を保持する",1)
             end
         else
-            obj.load("figure", shapes, shape_col, 100)
+            if obj.getinfo("saving")==false then
+                obj.load("figure", shapes, shape_col, 100) -- 編集中は100pxの図形をロードし、軽さを優先
+            else
+                obj.load("figure", shapes, shape_col, 10000) -- 出力中は10000pxの図形をロードし、綺麗さを優先
+            end
         end
     else
-        obj.load("figure", shapes, shape_col, 100)
+        if obj.getinfo("saving")==false then
+            obj.load("figure", shapes, shape_col, 100) -- 編集中は100pxの図形をロードし、軽さを優先
+        else
+            obj.load("figure", shapes, shape_col, 10000) -- 出力中は10000pxの図形をロードし、綺麗さを優先
+        end
     end
     obj.effect("リサイズ", "拡大率", 100.000, "X", w + sx, "Y", h + sy, "補間なし", 0, "ピクセル数でサイズ指定", 0)
     obj.effect("縁取り", "サイズ", frame_size, "ぼかし", 5, "縁色", frame_col)
