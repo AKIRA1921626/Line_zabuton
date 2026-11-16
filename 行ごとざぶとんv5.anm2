@@ -2,32 +2,95 @@
 
 --select@zabuton_type:ざぶとんタイプ=0,行ごと=0,全体=1
 
---group:サイズ,true
+--group:全体サイズ,true
 --track@sx:Xサイズ,-1000,1000,170,1
 --track@sy:Yサイズ,-1000,1000,70,1
+--track@st:上サイズ,-1000,1000,0,1
+--track@sb:下サイズ,-1000,1000,0,1
+--track@sl:左サイズ,-1000,1000,0,1
+--track@sr:右サイズ,-1000,1000,0,1
 --group
 
 --group:個別1~10サイズ,false
+--separator:XY上下左右1
 --track@sx1:Xサイズ1,-1000,1000,0,1
 --track@sy1:Yサイズ1,-1000,1000,0,1
+--track@st1:上サイズ1,-1000,1000,0,1
+--track@sb1:下サイズ1,-1000,1000,0,1
+--track@sl1:左サイズ1,-1000,1000,0,1
+--track@sr1:右サイズ1,-1000,1000,0,1
+
+--separator:XY上下左右2
 --track@sx2:Xサイズ2,-1000,1000,0,1
 --track@sy2:Yサイズ2,-1000,1000,0,1
+--track@st2:上サイズ2,-1000,1000,0,1
+--track@sb2:下サイズ2,-1000,1000,0,1
+--track@sl2:左サイズ2,-1000,1000,0,1
+--track@sr2:右サイズ2,-1000,1000,0,1
+
+--separator:XY上下左右3
 --track@sx3:Xサイズ3,-1000,1000,0,1
 --track@sy3:Yサイズ3,-1000,1000,0,1
+--track@st3:上サイズ3,-1000,1000,0,1
+--track@sb3:下サイズ3,-1000,1000,0,1
+--track@sl3:左サイズ3,-1000,1000,0,1
+--track@sr3:右サイズ3,-1000,1000,0,1
+
+--separator:XY上下左右4
 --track@sx4:Xサイズ4,-1000,1000,0,1
 --track@sy4:Yサイズ4,-1000,1000,0,1
+--track@st4:上サイズ4,-1000,1000,0,1
+--track@sb4:下サイズ4,-1000,1000,0,1
+--track@sl4:左サイズ4,-1000,1000,0,1
+--track@sr4:右サイズ4,-1000,1000,0,1
+
+--separator:XY上下左右5
 --track@sx5:Xサイズ5,-1000,1000,0,1
 --track@sy5:Yサイズ5,-1000,1000,0,1
+--track@st5:上サイズ5,-1000,1000,0,1
+--track@sb5:下サイズ5,-1000,1000,0,1
+--track@sl5:左サイズ5,-1000,1000,0,1
+--track@sr5:右サイズ5,-1000,1000,0,1
+
+--separator:XY上下左右6
 --track@sx6:Xサイズ6,-1000,1000,0,1
 --track@sy6:Yサイズ6,-1000,1000,0,1
+--track@st6:上サイズ6,-1000,1000,0,1
+--track@sb6:下サイズ6,-1000,1000,0,1
+--track@sl6:左サイズ6,-1000,1000,0,1
+--track@sr6:右サイズ6,-1000,1000,0,1
+
+--separator:XY上下左右7
 --track@sx7:Xサイズ7,-1000,1000,0,1
 --track@sy7:Yサイズ7,-1000,1000,0,1
+--track@st7:上サイズ7,-1000,1000,0,1
+--track@sb7:下サイズ7,-1000,1000,0,1
+--track@sl7:左サイズ7,-1000,1000,0,1
+--track@sr7:右サイズ7,-1000,1000,0,1
+
+--separator:XY上下左右8
 --track@sx8:Xサイズ8,-1000,1000,0,1
 --track@sy8:Yサイズ8,-1000,1000,0,1
+--track@st8:上サイズ8,-1000,1000,0,1
+--track@sb8:下サイズ8,-1000,1000,0,1
+--track@sl8:左サイズ8,-1000,1000,0,1
+--track@sr8:右サイズ8,-1000,1000,0,1
+
+--separator:XY上下左右9
 --track@sx9:Xサイズ9,-1000,1000,0,1
 --track@sy9:Yサイズ9,-1000,1000,0,1
+--track@st9:上サイズ9,-1000,1000,0,1
+--track@sb9:下サイズ9,-1000,1000,0,1
+--track@sl9:左サイズ9,-1000,1000,0,1
+--track@sr9:右サイズ9,-1000,1000,0,1
+
+--separator:XY上下左右10
 --track@sx10:Xサイズ10,-1000,1000,0,1
 --track@sy10:Yサイズ10,-1000,1000,0,1
+--track@st10:上サイズ10,-1000,1000,0,1
+--track@sb10:下サイズ10,-1000,1000,0,1
+--track@sl10:左サイズ10,-1000,1000,0,1
+--track@sr10:右サイズ10,-1000,1000,0,1
 --group
 
 --group:位置,true
@@ -379,12 +442,21 @@ if zabuton_type == 0 then -- 行ごと
             
             local sxs = { sx1, sx2, sx3, sx4, sx5, sx6, sx7, sx8, sx9, sx10 }
             local sys = { sy1, sy2, sy3, sy4, sy5, sy6, sy7, sy8, sy9, sy10 }
+            local srs = { sr1, sr2, sr3, sr4, sr5, sr6, sr7, sr8, sr9, sr10 }
+            local sls = { sl1, sl2, sl3, sl4, sl5, sl6, sl7, sl8, sl9, sl10 }
+            local sts = { st1, st2, st3, st4, st5, st6, st7, st8, st9, st10 }
+            local sbs = { sb1, sb2, sb3, sb4, sb5, sb6, sb7, sb8, sb9, sb10 }
             local LOCAL_SCALE_FACTOR = 3
 
-            -- v4と完全に一致するサイズ・リサイズ計算（XにはposXをそのまま渡す）
+            local sr_i = (sr or 0) + (srs[i] or 0)
+            local sl_i = (sl or 0) + (sls[i] or 0)
+            local st_i = (st or 0) + (sts[i] or 0)
+            local sb_i = (sb or 0) + (sbs[i] or 0)
+
+            -- v4準拠の基本サイズに、上下左右の追加サイズを加算
             local scale = 100.0 * size / 100
-            local posX = sizes[i][1] * LOCAL_SCALE_FACTOR + sx + (sxs[i] or 0)
-            local posY = sizes[i][2] + sy + (sys[i] or 0)
+            local posX = sizes[i][1] * LOCAL_SCALE_FACTOR + sx + (sxs[i] or 0) + sr_i + sl_i
+            local posY = sizes[i][2] + sy + (sys[i] or 0) + st_i + sb_i
 
             obj.effect("リサイズ", "拡大率", scale, "X", posX, "Y", posY, "補間なし", 0, "ピクセル数でサイズ指定", 1)
             obj.effect("縁取り", "サイズ", frame_size, "ぼかし", 5, "縁色", frame_col)
@@ -411,16 +483,22 @@ if zabuton_type == 0 then -- 行ごと
                 obj.effect("クリッピング", "上", 0, "下", 0, "左", clip_left, "右", clip_right)
             end
             
-            -- クリッピングで削られた分だけ座布団の中心位置を補正し、テキスト背後に追従
+            -- クリッピング削り込みおよび上下左右サイズによる座布団の中心位置を補正
             local clip_dx = (clip_left - clip_right) / 2
+            local side_dx = (sr_i - sl_i) / 2
+            local side_dy = (sb_i - st_i) / 2
+
             local orig_offset_x = params.offset_x[i]
-            params.offset_x[i] = orig_offset_x + clip_dx
+            local orig_offset_y = params.offset_y[i]
+            params.offset_x[i] = orig_offset_x + clip_dx + side_dx
+            params.offset_y[i] = orig_offset_y + side_dy
 
             -- 現在行 index (i) と パラメタを外部モジュールへ渡す
             draw_module.draw(i, params)
 
             -- パラメータを復元
             params.offset_x[i] = orig_offset_x
+            params.offset_y[i] = orig_offset_y
         end
     end
 end
@@ -444,21 +522,29 @@ if zabuton_type == 1 then -- 全体
                     obj.effect("単色化","強さ",strength,"色",img_col,"輝度を保持する",1)
                 end
             else
+                obj.load("figure", shapes, shape_col, 1000)
+                --[[ --ここの処理があると、出力後の動画で、座布団の真ん中に空白が生じるようになるため、コメントアウトし、常にサイズ1000をload
                 if obj.getinfo("saving")==false then
                     obj.load("figure", shapes, shape_col, 100)
                 else
                     obj.load("figure", shapes, shape_col, 10000)
-                end
+                ]]
             end
         else
+            obj.load("figure", shapes, shape_col, 1000)
+            --[[ --ここの処理があると、出力後の動画で、座布団の真ん中に空白が生じるようになるため、コメントアウトし、常にサイズ1000をload
             if obj.getinfo("saving")==false then
                 obj.load("figure", shapes, shape_col, 100)
             else
                 obj.load("figure", shapes, shape_col, 10000)
             end
+            ]]
         end
 
-        obj.effect("リサイズ", "拡大率", 100.000, "X", w + sx, "Y", h + sy, "補間なし", 0, "ピクセル数でサイズ指定", 0)
+        local total_w = w + sx + (sr or 0) + (sl or 0)
+        local total_h = h + sy + (st or 0) + (sb or 0)
+
+        obj.effect("リサイズ", "拡大率", 100.000, "X", total_w, "Y", total_h, "補間なし", 0, "ピクセル数でサイズ指定", 0)
         obj.effect("縁取り", "サイズ", frame_size, "ぼかし", 5, "縁色", frame_col)
 
         -- 改行時の上下クリッピング計算
@@ -480,7 +566,7 @@ if zabuton_type == 1 then -- 全体
             end
         end
 
-        local clip_h_per_line = (h + sy) / math.max(1, total_check_lines)
+        local clip_h_per_line = total_h / math.max(1, total_check_lines)
         local clip_top    = clip_h_per_line * hidden_top
         local clip_bottom = clip_h_per_line * hidden_bottom
 
@@ -488,9 +574,11 @@ if zabuton_type == 1 then -- 全体
             obj.effect("クリッピング", "上", clip_top, "下", clip_bottom, "左", 0, "右", 0)
         end
 
-        -- クリッピングで削られた分だけ座布団の上下中心位置を補正
+        -- クリッピング削り込みおよび上下左右サイズによる座布団の位置を補正
         local clip_dy = (clip_top - clip_bottom) / 2
-        obj.draw(0 + px, 0 + py + clip_dy, 0, 1, alpha / 100)
+        local side_dx = ((sr or 0) - (sl or 0)) / 2
+        local side_dy = ((sb or 0) - (st or 0)) / 2
+        obj.draw(0 + px + side_dx, 0 + py + clip_dy + side_dy, 0, 1, alpha / 100)
     end
 end
 
