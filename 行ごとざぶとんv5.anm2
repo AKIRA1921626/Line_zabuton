@@ -426,18 +426,24 @@ if zabuton_type == 0 then -- 行ごと
                         obj.effect("単色化","強さ",strength,"色",img_col,"輝度を保持する",1)
                     end
                 else
+                    obj.load("figure", shapes, shape_col, 1000)
+                    --[[ --ここの処理があると、出力後の動画で、座布団の真ん中に空白が生じるようになるため、コメントアウトし、常にサイズ1000をload
                     if obj.getinfo("saving")==false then
                         obj.load("figure", shapes, shape_col, 100)
                     else
                         obj.load("figure", shapes, shape_col, 10000)
                     end
+                    ]]
                 end
             else
+                obj.load("figure", shapes, shape_col, 1000)
+                --[[ --ここの処理があると、出力後の動画で、座布団の真ん中に空白が生じるようになるため、コメントアウトし、常にサイズ1000をload
                 if obj.getinfo("saving")==false then
                     obj.load("figure", shapes, shape_col, 100)
                 else
                     obj.load("figure", shapes, shape_col, 10000)
                 end
+                ]]
             end
             
             local sxs = { sx1, sx2, sx3, sx4, sx5, sx6, sx7, sx8, sx9, sx10 }
