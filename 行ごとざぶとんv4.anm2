@@ -91,7 +91,8 @@ local w,h = obj.w,obj.h
 local is_multi = obj.getoption("multi_object")
 
 -- 仮想画面の作成
-Akira.create_screen_tempbuffer()
+-- Akira.create_screen_tempbuffer() -- この関数はluaにあるはずだが、たまにエラーになるので下記に変更
+obj.setoption("drawtarget","tempbuffer",obj.screen_w,obj.screen_h)
 
 -- 行数の確認（ヘッダーヘルパー利用）
 local lb = Akira.line_break_confirmation()
@@ -248,6 +249,7 @@ if zabuton_type == 1 then -- 全体
         else
             obj.load("figure", shapes, shape_col, 1000)
             --[[ --ここの処理があると、出力後の動画で、座布団の真ん中に空白が生じるようになるため、コメントアウトし、常にサイズ1000をload
+
             if obj.getinfo("saving")==false then
                 obj.load("figure", shapes, shape_col, 100) -- 編集中は100pxの図形をロードし、軽さを優先
             else

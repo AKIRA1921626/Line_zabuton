@@ -84,7 +84,8 @@ local w,h = obj.w,obj.h
 local is_multi = obj.getoption("multi_object")
 
 -- 仮想画面の作成
-Akira.create_screen_tempbuffer()
+-- Akira.create_screen_tempbuffer() -- この関数はluaにあるはずだが、たまにエラーになるので下記に変更
+obj.setoption("drawtarget","tempbuffer",obj.screen_w,obj.screen_h)
 
 -- トラックバーおよび選択肢の値の取得
 local shape_names = {[1] = "四角形", [2] = "円", [3] = "三角形"}
