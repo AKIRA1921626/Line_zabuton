@@ -72,7 +72,7 @@
 --color@frame_col:縁色,0xffffff
 --group
 
-local Akira = require("AKIRA_aviutl2_helper")
+local Akira = require("AKIRA_aviutl2_helper_lzb")
 
 obj.copybuffer("cache:org","object")
 
